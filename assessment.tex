@@ -1,0 +1,1356 @@
+\documentclass[11pt]{article}
+
+    \usepackage[breakable]{tcolorbox}
+    \usepackage{parskip} % Stop auto-indenting (to mimic markdown behaviour)
+    
+    \usepackage{iftex}
+    \ifPDFTeX
+    	\usepackage[T1]{fontenc}
+    	\usepackage{mathpazo}
+    \else
+    	\usepackage{fontspec}
+    \fi
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % Maintain compatibility with old templates. Remove in nbconvert 6.0
+    \let\Oldincludegraphics\includegraphics
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionFormat{nocaption}{}
+    \captionsetup{format=nocaption,aboveskip=0pt,belowskip=0pt}
+
+    \usepackage[Export]{adjustbox} % Used to constrain images to a maximum size
+    \adjustboxset{max size={0.9\linewidth}{0.9\paperheight}}
+    \usepackage{float}
+    \floatplacement{figure}{H} % forces figures to be placed at the correct location
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range
+    \makeatletter % fix for grffile with XeLaTeX
+    \def\Gread@@xetex#1{%
+      \IfFileExists{"\Gin@base".bb}%
+      {\Gread@eps{\Gin@base.bb}}%
+      {\Gread@@xetex@aux#1}%
+    }
+    \makeatother
+
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    % The default LaTeX title has an obnoxious amount of whitespace. By default,
+    % titling removes some of it. It also provides customization options.
+    \usepackage{titling}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    \usepackage{mathrsfs}
+    
+
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+    \definecolor{ansi-default-inverse-fg}{HTML}{FFFFFF}
+    \definecolor{ansi-default-inverse-bg}{HTML}{000000}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatibility definitions
+    \def\gt{>}
+    \def\lt{<}
+    \let\Oldtex\TeX
+    \let\Oldlatex\LaTeX
+    \renewcommand{\TeX}{\textrm{\Oldtex}}
+    \renewcommand{\LaTeX}{\textrm{\Oldlatex}}
+    % Document parameters
+    % Document title
+    \title{EVAC Assessment 2}
+    \author{Exam No: Y3868718}
+    \date{}
+    
+    
+    
+    
+    
+% Pygments definitions
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % For linebreaks inside Verbatim environment from package fancyvrb. 
+    \makeatletter
+        \newbox\Wrappedcontinuationbox 
+        \newbox\Wrappedvisiblespacebox 
+        \newcommand*\Wrappedvisiblespace {\textcolor{red}{\textvisiblespace}} 
+        \newcommand*\Wrappedcontinuationsymbol {\textcolor{red}{\llap{\tiny$\m@th\hookrightarrow$}}} 
+        \newcommand*\Wrappedcontinuationindent {3ex } 
+        \newcommand*\Wrappedafterbreak {\kern\Wrappedcontinuationindent\copy\Wrappedcontinuationbox} 
+        % Take advantage of the already applied Pygments mark-up to insert 
+        % potential linebreaks for TeX processing. 
+        %        {, <, #, %, $, ' and ": go to next line. 
+        %        _, }, ^, &, >, - and ~: stay at end of broken line. 
+        % Use of \textquotesingle for straight quote. 
+        \newcommand*\Wrappedbreaksatspecials {% 
+            \def\PYGZus{\discretionary{\char`\_}{\Wrappedafterbreak}{\char`\_}}% 
+            \def\PYGZob{\discretionary{}{\Wrappedafterbreak\char`\{}{\char`\{}}% 
+            \def\PYGZcb{\discretionary{\char`\}}{\Wrappedafterbreak}{\char`\}}}% 
+            \def\PYGZca{\discretionary{\char`\^}{\Wrappedafterbreak}{\char`\^}}% 
+            \def\PYGZam{\discretionary{\char`\&}{\Wrappedafterbreak}{\char`\&}}% 
+            \def\PYGZlt{\discretionary{}{\Wrappedafterbreak\char`\<}{\char`\<}}% 
+            \def\PYGZgt{\discretionary{\char`\>}{\Wrappedafterbreak}{\char`\>}}% 
+            \def\PYGZsh{\discretionary{}{\Wrappedafterbreak\char`\#}{\char`\#}}% 
+            \def\PYGZpc{\discretionary{}{\Wrappedafterbreak\char`\%}{\char`\%}}% 
+            \def\PYGZdl{\discretionary{}{\Wrappedafterbreak\char`\$}{\char`\$}}% 
+            \def\PYGZhy{\discretionary{\char`\-}{\Wrappedafterbreak}{\char`\-}}% 
+            \def\PYGZsq{\discretionary{}{\Wrappedafterbreak\textquotesingle}{\textquotesingle}}% 
+            \def\PYGZdq{\discretionary{}{\Wrappedafterbreak\char`\"}{\char`\"}}% 
+            \def\PYGZti{\discretionary{\char`\~}{\Wrappedafterbreak}{\char`\~}}% 
+        } 
+        % Some characters . , ; ? ! / are not pygmentized. 
+        % This macro makes them "active" and they will insert potential linebreaks 
+        \newcommand*\Wrappedbreaksatpunct {% 
+            \lccode`\~`\.\lowercase{\def~}{\discretionary{\hbox{\char`\.}}{\Wrappedafterbreak}{\hbox{\char`\.}}}% 
+            \lccode`\~`\,\lowercase{\def~}{\discretionary{\hbox{\char`\,}}{\Wrappedafterbreak}{\hbox{\char`\,}}}% 
+            \lccode`\~`\;\lowercase{\def~}{\discretionary{\hbox{\char`\;}}{\Wrappedafterbreak}{\hbox{\char`\;}}}% 
+            \lccode`\~`\:\lowercase{\def~}{\discretionary{\hbox{\char`\:}}{\Wrappedafterbreak}{\hbox{\char`\:}}}% 
+            \lccode`\~`\?\lowercase{\def~}{\discretionary{\hbox{\char`\?}}{\Wrappedafterbreak}{\hbox{\char`\?}}}% 
+            \lccode`\~`\!\lowercase{\def~}{\discretionary{\hbox{\char`\!}}{\Wrappedafterbreak}{\hbox{\char`\!}}}% 
+            \lccode`\~`\/\lowercase{\def~}{\discretionary{\hbox{\char`\/}}{\Wrappedafterbreak}{\hbox{\char`\/}}}% 
+            \catcode`\.\active
+            \catcode`\,\active 
+            \catcode`\;\active
+            \catcode`\:\active
+            \catcode`\?\active
+            \catcode`\!\active
+            \catcode`\/\active 
+            \lccode`\~`\~ 	
+        }
+    \makeatother
+
+    \let\OriginalVerbatim=\Verbatim
+    \makeatletter
+    \renewcommand{\Verbatim}[1][1]{%
+        %\parskip\z@skip
+        \sbox\Wrappedcontinuationbox {\Wrappedcontinuationsymbol}%
+        \sbox\Wrappedvisiblespacebox {\FV@SetupFont\Wrappedvisiblespace}%
+        \def\FancyVerbFormatLine ##1{\hsize\linewidth
+            \vtop{\raggedright\hyphenpenalty\z@\exhyphenpenalty\z@
+                \doublehyphendemerits\z@\finalhyphendemerits\z@
+                \strut ##1\strut}%
+        }%
+        % If the linebreak is at a space, the latter will be displayed as visible
+        % space at end of first line, and a continuation symbol starts next line.
+        % Stretch/shrink are however usually zero for typewriter font.
+        \def\FV@Space {%
+            \nobreak\hskip\z@ plus\fontdimen3\font minus\fontdimen4\font
+            \discretionary{\copy\Wrappedvisiblespacebox}{\Wrappedafterbreak}
+            {\kern\fontdimen2\font}%
+        }%
+        
+        % Allow breaks at special characters using \PYG... macros.
+        \Wrappedbreaksatspecials
+        % Breaks at punctuation characters . , ; ? ! and / need catcode=\active 	
+        \OriginalVerbatim[#1,codes*=\Wrappedbreaksatpunct]%
+    }
+    \makeatother
+
+    % Exact colors from NB
+    \definecolor{incolor}{HTML}{303F9F}
+    \definecolor{outcolor}{HTML}{D84315}
+    \definecolor{cellborder}{HTML}{CFCFCF}
+    \definecolor{cellbackground}{HTML}{F7F7F7}
+    
+    % prompt
+    \makeatletter
+    \newcommand{\boxspacing}{\kern\kvtcb@left@rule\kern\kvtcb@boxsep}
+    \makeatother
+    \newcommand{\prompt}[4]{
+        \ttfamily\llap{{\color{#2}[#3]:\hspace{3pt}#4}}\vspace{-\baselineskip}
+    }
+    
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+\begin{document}
+    
+    \maketitle
+    \begin{center}
+      PDF output of Colab notebook. If any discrepancies found between the two, the Colab notebook version should be seen as correct.
+    \end{center}
+    
+
+    
+    \hypertarget{evac-2-assessment}{%
+\section{EVAC-2 Assessment}\label{evac-2-assessment}}
+
+\hypertarget{exam-number-y3868718}{%
+\subsection{Exam Number: Y3868718}\label{exam-number-y3868718}}
+
+This notebook contains all code and explanations of said code. Code is
+separated into blocks, organised and split by purpose of code.
+
+The method used for this assessment to evolve agents throughout gameplay
+was a neural network, where weights of said neural network are evolved
+generation by generation. Further detail can be found at the relevant
+code sections within this report.
+
+The time taken to run this entire notebook on Google Colab is
+approximately 16 minutes, with the time taken to train a single
+population being approximately 38 seconds.
+
+The below import cell is required by Google Colab to install the
+\texttt{DEAP} library required to run the genetic algorithm implemented
+in this notebook.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{1}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{o}{!}pip install deap
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Requirement already satisfied: deap in /usr/local/lib/python3.7/dist-packages
+(1.3.1)
+Requirement already satisfied: numpy in /usr/local/lib/python3.7/dist-packages
+(from deap) (1.21.5)
+    \end{Verbatim}
+
+    All imports required for this notebook can be found in the below cell.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{2}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+\PY{k+kn}{from} \PY{n+nn}{deap} \PY{k+kn}{import} \PY{n}{base}
+\PY{k+kn}{from} \PY{n+nn}{deap} \PY{k+kn}{import} \PY{n}{tools}
+\PY{k+kn}{import} \PY{n+nn}{random}
+\PY{o}{\PYZpc{}}\PY{k}{matplotlib} inline
+\PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+\PY{k+kn}{from} \PY{n+nn}{scipy} \PY{k+kn}{import} \PY{n}{stats}
+\PY{k+kn}{import} \PY{n+nn}{math}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{agent-representation}{%
+\subsection{Agent Representation}\label{agent-representation}}
+
+As each agent is required to be part of a group, groups were defined as
+an integer with representation as follows: * \texttt{0} - Saints *
+\texttt{1} - Buddies * \texttt{2} - Fight Club * \texttt{3} - Vandals
+
+An agent was decided to be represented using the class \texttt{Player},
+this class could then be used to keep track of all important agent
+attributes: * \texttt{wealth} - The total wealth of the agent. *
+\texttt{startingGroup} - The initial group assignment of the agent,
+reassigned each generation start. This is randomly allocated when the
+agent is first created. * \texttt{group} - The current group assignment
+of the agent. * \texttt{gameCount} - The number of games played by the
+agent. * \texttt{weights} - List of floats used in the neural network to
+make a decision on which group to join. Evolved by the evolutionary
+algorithm. * \texttt{fitness} - Current fitness of the agent.
+
+The game can be played by calling the \texttt{getPayoff()} method with
+the opponent as the required parameter. This is called for each of the
+two agents chosen in a single game as each agent assumes the role of
+opponent to the other. Representing each group as an integer allows for
+very simple calculation of payoffs, with a lookup table implemented for
+each agent as follows:
+\texttt{{[}{[}4,0,4,0{]},{[}6,4,6,1{]},{[}4,0,1,0{]},{[}6,1,6,0{]}{]}}.
+This lookup table stores the payoffs for each group interaction with
+each group, for a total of 16 different possible interactions.
+
+The evolutionary aspect of the player class is called with
+\texttt{evaluate()}, with the required parameters of the current game
+opponent along with an instance of the neural network class. This method
+loads the agent weights into the neural network, calculates the group
+that the agent should be assigned to (this is the agent deciding if it
+should move group) and then the agent fitness is assigned as the agent
+wealth divided by the game count. This fitness was chosen to allow for a
+fair comparison between agents regardless of how many games they were
+randomly chosen to play.
+
+The \texttt{reset()} method is called to setup an agent ready for a new
+generation. This resets the group to the agents starting group, along
+with setting the agent wealth, fitness, and game counter to 0.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{3}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{class} \PY{n+nc}{Player}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{  stores all data required by one agent}
+\PY{l+s+sd}{  \PYZsq{}\PYZsq{}\PYZsq{}}
+  \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{IND\PYZus{}SIZE}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    initialises an agent ready to play a game }
+
+\PY{l+s+sd}{    args:}
+\PY{l+s+sd}{      int IND\PYZus{}SIZE \PYZhy{} size of neural network, therefore number of weights }
+\PY{l+s+sd}{                     required}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wealth} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{c+c1}{\PYZsh{} starting group randomly selected}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{startingGroup} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} current group agent is a member of }
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{group} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{startingGroup}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gameCount} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{c+c1}{\PYZsh{} weights to be used in the neural network, randomly initially assigned}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights} \PY{o}{=} \PY{n}{tools}\PY{o}{.}\PY{n}{initRepeat}\PY{p}{(}\PY{n+nb}{list}\PY{p}{,} \PY{n}{toolbox}\PY{o}{.}\PY{n}{attr\PYZus{}float}\PY{p}{,} \PY{n}{IND\PYZus{}SIZE}\PY{p}{)}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{fitness} \PY{o}{=} \PY{l+m+mi}{0}
+  
+  \PY{k}{def} \PY{n+nf}{evaluate}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,}\PY{n}{opponent}\PY{p}{,}\PY{n}{network}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    calculate agent group decision}
+
+\PY{l+s+sd}{    args:}
+\PY{l+s+sd}{      Player opponent \PYZhy{} player instance of the opponent this agent is playing }
+\PY{l+s+sd}{                        against}
+\PY{l+s+sd}{      NeuralNetwork \PYZhy{} network \PYZhy{} neural network instance to apply weights to and}
+\PY{l+s+sd}{                      make group decision}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{c+c1}{\PYZsh{} set agent weights in network}
+    \PY{n}{network}\PY{o}{.}\PY{n}{setWeightsLinear}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} get group output from neural network}
+    \PY{n}{output} \PY{o}{=} \PY{n}{network}\PY{o}{.}\PY{n}{feedForward}\PY{p}{(}\PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wealth}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{group}\PY{p}{,} 
+                                  \PY{n}{opponent}\PY{o}{.}\PY{n}{wealth}\PY{p}{,} \PY{n}{opponent}\PY{o}{.}\PY{n}{group}\PY{p}{]}\PY{p}{)}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{group} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{output}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{0}\PY{p}{)}
+
+  \PY{k}{def} \PY{n+nf}{addPayoff}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{opponent}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    calculate agent payoff, add to wealth, increment game counter, set fitness}
+
+\PY{l+s+sd}{    args:}
+\PY{l+s+sd}{      Player opponent \PYZhy{} player instance of the opponent this agent is playing}
+\PY{l+s+sd}{                        against}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{c+c1}{\PYZsh{} payoff lookup table}
+    \PY{n}{payoffs} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{4}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{6}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}
+    \PY{c+c1}{\PYZsh{} add value from relevant value in lookup table}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wealth} \PY{o}{+}\PY{o}{=} \PY{n}{payoffs}\PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{group}\PY{p}{]}\PY{p}{[}\PY{n}{opponent}\PY{o}{.}\PY{n}{group}\PY{p}{]}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gameCount} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+    \PY{c+c1}{\PYZsh{} set fitness as agent average payoff}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{fitness} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wealth} \PY{o}{/} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gameCount}
+
+  \PY{k}{def} \PY{n+nf}{reset}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    reset agent ready for the next generation}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wealth} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{gameCount} \PY{o}{=} \PY{l+m+mi}{0}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{group} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{startingGroup}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{fitness} \PY{o}{=} \PY{l+m+mi}{0}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{agent-evolution-environment}{%
+\subsection{Agent Evolution
+Environment}\label{agent-evolution-environment}}
+
+\hypertarget{neural-network}{%
+\subsubsection{Neural Network}\label{neural-network}}
+
+The neural network used by all agents in the system is a single hidden
+layer network with 4 input nodes, 8 hidden nodes and 4 output nodes.
+These 4 output nodes represent the decision of which group to join, and
+a group is selected using a \texttt{softmax} function. The input nodes
+of this neural network are the agents own group, the agents own wealth,
+the opponents group and the opponents wealth. These inputs were settled
+on after experimentation with other inputs such as the number of games
+the agent had played, or the current game number. These additional
+inputs did not improve performance and were removed to reduce chance of
+overfitting.
+
+A bias of 1 was added to the input layer to improve performance.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{4}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} layer node count}
+\PY{n}{numInputNodes} \PY{o}{=} \PY{l+m+mi}{4}
+\PY{n}{numHiddenNodes} \PY{o}{=} \PY{l+m+mi}{8}
+\PY{n}{numOutputNodes} \PY{o}{=} \PY{l+m+mi}{4}
+
+\PY{c+c1}{\PYZsh{} number of weights required by neural network}
+\PY{n}{IND\PYZus{}SIZE} \PY{o}{=} \PY{p}{(}\PY{p}{(}\PY{n}{numInputNodes}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{*} \PY{n}{numHiddenNodes}\PY{p}{)}\PY{o}{+}\PY{p}{(}\PY{n}{numHiddenNodes} \PY{o}{*} \PY{n}{numOutputNodes}\PY{p}{)}
+
+\PY{k}{class} \PY{n+nc}{NeuralNetwork}\PY{p}{(}\PY{n+nb}{object}\PY{p}{)}\PY{p}{:}
+  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{  neural network for decision on which group agent should join}
+\PY{l+s+sd}{  \PYZsq{}\PYZsq{}\PYZsq{}}
+  \PY{k}{def} \PY{n+nf+fm}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{numInput}\PY{p}{,} \PY{n}{numHidden}\PY{p}{,} \PY{n}{numOutput}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    initialises neural network ready for use}
+
+\PY{l+s+sd}{    args:}
+\PY{l+s+sd}{      int numInput \PYZhy{} number of input nodes}
+\PY{l+s+sd}{      int numHidden \PYZhy{} number of hidden nodes in single hidden node layer}
+\PY{l+s+sd}{      int numOutput \PYZhy{} number of output nodes (1 per group)}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numInput} \PY{o}{=} \PY{n}{numInput} \PY{o}{+} \PY{l+m+mi}{1}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numHidden} \PY{o}{=} \PY{n}{numHidden}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numOutput} \PY{o}{=} \PY{n}{numOutput}
+
+    \PY{c+c1}{\PYZsh{} generate some basic weights for the network}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wh} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numHidden}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numInput}\PY{p}{)} 
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wo} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{randn}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numOutput}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numHidden}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} rectified linear unit to be used in hidden layer}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{ReLU} \PY{o}{=} \PY{k}{lambda} \PY{n}{x} \PY{p}{:} \PY{n+nb}{max}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{x}\PY{p}{)}
+
+  \PY{k}{def} \PY{n+nf}{softmax}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{x}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    used to normalise output layer}
+
+\PY{l+s+sd}{    args:}
+\PY{l+s+sd}{      list (float) x \PYZhy{} output layer of neural network}
+\PY{l+s+sd}{    return:}
+\PY{l+s+sd}{      softmax of x}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n}{e\PYZus{}x} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n}{x} \PY{o}{\PYZhy{}} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{x}\PY{p}{)}\PY{p}{)}
+    \PY{k}{return} \PY{n}{e\PYZus{}x} \PY{o}{/} \PY{n}{e\PYZus{}x}\PY{o}{.}\PY{n}{sum}\PY{p}{(}\PY{p}{)}
+
+  \PY{k}{def} \PY{n+nf}{feedForward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    run inputs through neural network}
+
+\PY{l+s+sd}{    args:}
+\PY{l+s+sd}{      list inputs \PYZhy{} neural network inputs}
+\PY{l+s+sd}{    return:}
+\PY{l+s+sd}{      softmax output of network}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{c+c1}{\PYZsh{} add data to input layer}
+    \PY{n}{inputsBias} \PY{o}{=} \PY{n}{inputs}\PY{p}{[}\PY{p}{:}\PY{p}{]}
+    \PY{n}{inputsBias}\PY{o}{.}\PY{n}{insert}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} feed input layer to hidden layer}
+    \PY{n}{h1} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wh}\PY{p}{,} \PY{n}{inputsBias}\PY{p}{)}
+    \PY{n}{h1} \PY{o}{=} \PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{ReLU}\PY{p}{(}\PY{n}{x}\PY{p}{)} \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n}{h1}\PY{p}{]}
+
+    \PY{c+c1}{\PYZsh{} feed hidden layer to output layer}
+    \PY{n}{output} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{dot}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wo}\PY{p}{,} \PY{n}{h1}\PY{p}{)}
+    \PY{k}{return} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{softmax}\PY{p}{(}\PY{n}{output}\PY{p}{)}
+
+  \PY{k}{def} \PY{n+nf}{setWeightsLinear}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{Wgenome}\PY{p}{)}\PY{p}{:}
+    \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{    set given weights for neural network}
+
+\PY{l+s+sd}{    args:}
+\PY{l+s+sd}{      list (float) Wgenome \PYZhy{} list of weights evolved by an agent}
+\PY{l+s+sd}{    \PYZsq{}\PYZsq{}\PYZsq{}}
+    \PY{n}{numWeights\PYZus{}IH} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numHidden} \PY{o}{*} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numInput}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} set hidden layer weights}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wh} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{Wgenome}\PY{p}{[}\PY{p}{:}\PY{n}{numWeights\PYZus{}IH}\PY{p}{]}\PY{p}{)}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wh} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wh}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numHidden}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numInput}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} set output layer weights}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wo} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{array}\PY{p}{(}\PY{n}{Wgenome}\PY{p}{[}\PY{n}{numWeights\PYZus{}IH}\PY{p}{:}\PY{p}{]}\PY{p}{)}
+    \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wo} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{wo}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numOutput}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{numHidden}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{running-the-simulation}{%
+\subsubsection{Running the Simulation}\label{running-the-simulation}}
+
+The game simulation is defined as: for a set number of games, two agents
+are selected at random from a population to play against each other.
+Payoffs are calculated and each agent is then given the opportunity to
+change groups.
+
+This is implemented within the method \texttt{playGameAndEvolve} using
+the constant \texttt{NGAMES} to define the number of games played, and
+\texttt{POP} to specify the population size. The two agents are selected
+using the code \texttt{random.sample(range(POP),2)}, which selects two
+distinct population indexes, these agents then calculate their
+respective payoffs (and fitness) using \texttt{addPayoff}, and calculate
+their decision on if they should migrate groups using \texttt{evaluate}.
+Details of these methods are found in the Agent Representation part of
+this code.
+
+\texttt{playBasicGame} is an additional method that can be used to run
+the game without allowing agents to swap their group assignments, this
+will be used to evaluate the behaviour developed through adaption.
+
+\texttt{POP} and \texttt{NGAMES} were selected with the computational
+power of Google Colab in mind to provide a large population without
+taking too long to execute.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{5}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} set game number and population}
+\PY{n}{NGAMES} \PY{o}{=} \PY{l+m+mi}{5000}
+\PY{n}{POP} \PY{o}{=} \PY{l+m+mi}{500}
+
+\PY{k}{def} \PY{n+nf}{playGameAndEvolve}\PY{p}{(}\PY{n}{pop}\PY{p}{,} \PY{n}{network}\PY{p}{)}\PY{p}{:}
+  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{  play NGAMES number of games, allowing agents to make decisions on when to }
+\PY{l+s+sd}{  change groups using the neural network}
+
+\PY{l+s+sd}{  args:}
+\PY{l+s+sd}{    list (Player) pop \PYZhy{} population of agents}
+\PY{l+s+sd}{    NeuralNetwork network \PYZhy{} neural network to use to evaluate}
+\PY{l+s+sd}{  return:}
+\PY{l+s+sd}{    population}
+\PY{l+s+sd}{  \PYZsq{}\PYZsq{}\PYZsq{}}
+  \PY{k}{for} \PY{n}{r} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NGAMES}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} randomly select two distinct agents}
+    \PY{n}{selection} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{POP}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} calculate each agent payoff}
+    \PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{addPayoff}\PY{p}{(}\PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+    \PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{addPayoff}\PY{p}{(}\PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} give each agent the opportunity to change groups}
+    \PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{evaluate}\PY{p}{(}\PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{,}\PY{n}{network}\PY{p}{)}
+    \PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{evaluate}\PY{p}{(}\PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{,}\PY{n}{network}\PY{p}{)}
+  \PY{k}{return} \PY{n}{pop}
+
+\PY{k}{def} \PY{n+nf}{playBasicGame}\PY{p}{(}\PY{n}{pop}\PY{p}{)}\PY{p}{:}
+  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{  play NGAMES number of games, do not use the neural network or allow agents to }
+\PY{l+s+sd}{  change groups}
+
+\PY{l+s+sd}{  args:}
+\PY{l+s+sd}{    list (Player) pop \PYZhy{} population of agents}
+\PY{l+s+sd}{  return:}
+\PY{l+s+sd}{    population}
+\PY{l+s+sd}{  \PYZsq{}\PYZsq{}\PYZsq{}}
+  \PY{k}{for} \PY{n}{r} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{NGAMES}\PY{p}{)}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} randomly select two distinct agents}
+    \PY{n}{selection} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{sample}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{POP}\PY{p}{)}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} calculate each agent payoff}
+    \PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{addPayoff}\PY{p}{(}\PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+    \PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{]}\PY{o}{.}\PY{n}{addPayoff}\PY{p}{(}\PY{n}{pop}\PY{p}{[}\PY{n}{selection}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{]}\PY{p}{)}
+  \PY{k}{return} \PY{n}{pop}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{agent-adaptation-procedure-training-through-evolution}{%
+\subsection{Agent Adaptation Procedure (Training through
+Evolution)}\label{agent-adaptation-procedure-training-through-evolution}}
+
+Below are some helpful methods to keep track of population performance
+through evolution. \texttt{countGroups()} gets number of agents in each
+group, while \texttt{fitnessStats()} gets the mean, minimum and maximum
+fitness values for the whole population.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{6}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{k}{def} \PY{n+nf}{countGroups}\PY{p}{(}\PY{n}{pop}\PY{p}{)}\PY{p}{:}
+  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{  get the total number of agents in each group}
+
+\PY{l+s+sd}{  args:}
+\PY{l+s+sd}{    list (Player) pop \PYZhy{} population of agents}
+\PY{l+s+sd}{  return:}
+\PY{l+s+sd}{    int list of counts of each group}
+\PY{l+s+sd}{  \PYZsq{}\PYZsq{}\PYZsq{}}
+  \PY{n}{groupTotals}\PY{o}{=}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}
+  \PY{k}{for} \PY{n}{person} \PY{o+ow}{in} \PY{n}{pop}\PY{p}{:}
+    \PY{n}{groupTotals}\PY{p}{[}\PY{n}{person}\PY{o}{.}\PY{n}{group}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+  \PY{k}{return} \PY{n}{groupTotals}
+
+\PY{k}{def} \PY{n+nf}{fitnessStats}\PY{p}{(}\PY{n}{pop}\PY{p}{)}\PY{p}{:}
+  \PY{l+s+sd}{\PYZsq{}\PYZsq{}\PYZsq{}}
+\PY{l+s+sd}{  calculate fitness statistics of the population}
+
+\PY{l+s+sd}{  args:}
+\PY{l+s+sd}{    list (Player) pop \PYZhy{} population of agents}
+\PY{l+s+sd}{  return:}
+\PY{l+s+sd}{    dictionary of mean, max, min of agent fitness}
+\PY{l+s+sd}{  \PYZsq{}\PYZsq{}\PYZsq{}}
+  \PY{n}{fitnessSum} \PY{o}{=} \PY{l+m+mi}{0}
+  \PY{n}{fitnessMax} \PY{o}{=} \PY{l+m+mi}{0} 
+  \PY{n}{fitnessMin} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+  \PY{k}{for} \PY{n}{person} \PY{o+ow}{in} \PY{n}{pop}\PY{p}{:}
+    \PY{c+c1}{\PYZsh{} set highest fitness}
+    \PY{k}{if}\PY{p}{(}\PY{n}{person}\PY{o}{.}\PY{n}{fitness} \PY{o}{\PYZgt{}} \PY{n}{fitnessMax}\PY{p}{)}\PY{p}{:}
+      \PY{n}{fitnessMax} \PY{o}{=} \PY{n}{person}\PY{o}{.}\PY{n}{fitness}
+    \PY{c+c1}{\PYZsh{} set lowest fitness}
+    \PY{k}{if}\PY{p}{(}\PY{n}{person}\PY{o}{.}\PY{n}{fitness} \PY{o}{\PYZlt{}} \PY{n}{fitnessMin} \PY{o+ow}{or} \PY{n}{fitnessMin} \PY{o}{==} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+      \PY{n}{fitnessMin} \PY{o}{=} \PY{n}{person}\PY{o}{.}\PY{n}{fitness}
+    \PY{c+c1}{\PYZsh{} sum fitness to be divided for mean}
+    \PY{n}{fitnessSum} \PY{o}{+}\PY{o}{=} \PY{n}{person}\PY{o}{.}\PY{n}{fitness}
+  \PY{k}{return} \PY{p}{\PYZob{}} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:} \PY{n}{fitnessSum}\PY{o}{/}\PY{n+nb}{len}\PY{p}{(}\PY{n}{pop}\PY{p}{)}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{max}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{n}{fitnessMax}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{min}\PY{l+s+s2}{\PYZdq{}}\PY{p}{:}\PY{n}{fitnessMin} \PY{p}{\PYZcb{}}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \hypertarget{evolutionary-training-method}{%
+\subsubsection{Evolutionary training
+method}\label{evolutionary-training-method}}
+
+To evolve each agents neural network weightings, the python module
+\texttt{DEAP} has been used. \texttt{DEAP} allows for easy crossover,
+mutation and selection of the population: * Crossover - Defined as
+\texttt{mate} within the \texttt{DEAP} toolbox, implemented using the
+\texttt{cxOnePoint} method. Probability of crossover for each individual
+is defined by constant \texttt{CXPB} set to \texttt{0.1}. * Mutation -
+Defined as \texttt{mutate} within the \texttt{DEAP} toolbox, implemented
+using the \texttt{mutGaussian} method with the parameters
+\texttt{mu=0.0,\ sigma=0.5,\ indpb=INDPB}. Probability of an individual
+being subject to mutation is defined by constant \texttt{MUTPB} set to
+\texttt{0.5}, and probability of each chromosome within a selected
+individual (neural network weight in this implementation) being mutated
+is defined by constant \texttt{INDPB} set to \texttt{0.1}. * Selection -
+Defined as \texttt{select} within the \texttt{DEAP} toolbox, implemented
+using the \texttt{selTournament} method with a tournament size of 3. *
+Generations - Number of generations is defined by constant \texttt{NGEN}
+set to \texttt{50}.
+
+Once these toolbox commands are setup, a population of constant size
+\texttt{POP} (set to 500) is generated using \texttt{DEAP} where an
+individual in that population is an instance of the previously discussed
+\texttt{player} class. An instance of the neural network is also
+initialized to be used by the agents in the population. The game is then
+played with this initial population and fitness information is output.
+Generational evolution then begins.
+
+For each generation, tournament selection is used to select a new
+population of agents based on the fitness of the previous generation.
+This new population is then subject to crossover and mutation for each
+agents neural network weights. During mutation an individual also has a
+chance to mutate its starting group to another randomly selected group.
+This has the same probability of being mutated as each weight in an
+agent does. All agents in the population are then reset to their
+starting values (wealth, group, fitness and number of games played), the
+game then is played with this new population and fitness information for
+this new population is output. The next generation then begins.
+
+Using this method, a population uses multi-agent evolution to evolve as
+each game pits agents against each other. The data passed to the next
+generation of agents consists of the neural network weights of an agent
+along with the initial group assignment of the agent. This generational
+evolution code output can be seen in the output of this cell, showing
+for each generation the average and max fitness of the population, along
+with the group distribution of the population after all games are
+played.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{7}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} set evolution probabilities }
+\PY{n}{INDPB} \PY{o}{=} \PY{l+m+mf}{0.1}
+\PY{n}{CXPB}  \PY{o}{=} \PY{l+m+mf}{0.1}
+\PY{n}{MUTPB} \PY{o}{=} \PY{l+m+mf}{0.5}
+\PY{c+c1}{\PYZsh{} set number of generations}
+\PY{n}{NGEN}  \PY{o}{=} \PY{l+m+mi}{50}
+
+\PY{c+c1}{\PYZsh{} setup DEAP toolbox of methods used to evolve}
+\PY{n}{toolbox} \PY{o}{=} \PY{n}{base}\PY{o}{.}\PY{n}{Toolbox}\PY{p}{(}\PY{p}{)}
+\PY{n}{toolbox}\PY{o}{.}\PY{n}{register}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{attr\PYZus{}float}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{random}\PY{o}{.}\PY{n}{uniform}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.0}\PY{p}{,} \PY{l+m+mf}{1.0}\PY{p}{)}
+\PY{n}{toolbox}\PY{o}{.}\PY{n}{register}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{individual}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{Player}\PY{p}{,} \PY{n}{IND\PYZus{}SIZE}\PY{p}{)}
+\PY{n}{toolbox}\PY{o}{.}\PY{n}{register}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{tools}\PY{o}{.}\PY{n}{cxOnePoint}\PY{p}{)}
+\PY{n}{toolbox}\PY{o}{.}\PY{n}{register}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{select}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{tools}\PY{o}{.}\PY{n}{selTournament}\PY{p}{,} \PY{n}{tournsize}\PY{o}{=}\PY{l+m+mi}{3}\PY{p}{)}
+\PY{n}{toolbox}\PY{o}{.}\PY{n}{register}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mutate}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{tools}\PY{o}{.}\PY{n}{mutGaussian}\PY{p}{,} \PY{n}{mu}\PY{o}{=}\PY{l+m+mf}{0.0}\PY{p}{,} \PY{n}{sigma}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{,} \PY{n}{indpb}\PY{o}{=}\PY{n}{INDPB}\PY{p}{)}
+\PY{n}{toolbox}\PY{o}{.}\PY{n}{register}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{pop}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{tools}\PY{o}{.}\PY{n}{initRepeat}\PY{p}{,} \PY{n+nb}{list}\PY{p}{,} \PY{n}{toolbox}\PY{o}{.}\PY{n}{individual}\PY{p}{)}
+
+\PY{k}{def} \PY{n+nf}{evolvePopulation}\PY{p}{(}\PY{n}{verbose}\PY{o}{=}\PY{k+kc}{True}\PY{p}{)}\PY{p}{:}
+  \PY{n}{groupMembership} \PY{o}{=} \PY{p}{[}\PY{p}{[}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{p}{]}\PY{p}{,}\PY{p}{[}\PY{p}{]}\PY{p}{]}
+  \PY{n}{generationFitness} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+  \PY{c+c1}{\PYZsh{} initialise neural network}
+  \PY{n}{network} \PY{o}{=} \PY{n}{NeuralNetwork}\PY{p}{(}\PY{n}{numInputNodes}\PY{p}{,} \PY{n}{numHiddenNodes}\PY{p}{,} \PY{n}{numOutputNodes}\PY{p}{)}
+
+  \PY{c+c1}{\PYZsh{} setup population}
+  \PY{n}{pop} \PY{o}{=} \PY{n}{toolbox}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{n}{POP}\PY{p}{)}
+  \PY{k}{if} \PY{p}{(}\PY{n}{verbose}\PY{p}{)}\PY{p}{:}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{} Generation 1 \PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} initial play game, allowing agents to swap groups using neural network}
+  \PY{n}{pop}\PY{p}{[}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{playGameAndEvolve}\PY{p}{(}\PY{n}{pop}\PY{p}{,} \PY{n}{network}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} get results of game}
+  \PY{n}{popFitness} \PY{o}{=} \PY{n}{fitnessStats}\PY{p}{(}\PY{n}{pop}\PY{p}{)}
+  \PY{n}{generationFitness}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{popFitness}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+  \PY{n}{currentGroups} \PY{o}{=} \PY{n}{countGroups}\PY{p}{(}\PY{n}{pop}\PY{p}{)}
+  \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{currentGroups}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+    \PY{n}{groupMembership}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{currentGroups}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} output generation data}
+  \PY{k}{if} \PY{p}{(}\PY{n}{verbose}\PY{p}{)}\PY{p}{:} 
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fitness avg: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{popFitness}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fitness max: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{popFitness}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{max}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+    \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Group count: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{currentGroups}\PY{p}{)}\PY{p}{)}
+
+  \PY{c+c1}{\PYZsh{} run for all generations}
+  \PY{k}{for} \PY{n}{g} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{NGEN}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{:}
+    \PY{k}{if} \PY{p}{(}\PY{n}{verbose}\PY{p}{)}\PY{p}{:}
+      \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}\PYZhy{} Generation }\PY{l+s+si}{\PYZpc{}i}\PY{l+s+s2}{ \PYZhy{}\PYZhy{}}\PY{l+s+s2}{\PYZdq{}} \PY{o}{\PYZpc{}} \PY{n}{g}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} use tournament selection to select offspring}
+    \PY{n}{offspring} \PY{o}{=} \PY{n}{toolbox}\PY{o}{.}\PY{n}{select}\PY{p}{(}\PY{n}{pop}\PY{p}{,} \PY{n+nb}{len}\PY{p}{(}\PY{n}{pop}\PY{p}{)}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} clone selected offspring}
+    \PY{n}{offspring} \PY{o}{=} \PY{n+nb}{list}\PY{p}{(}\PY{n+nb}{map}\PY{p}{(}\PY{n}{toolbox}\PY{o}{.}\PY{n}{clone}\PY{p}{,} \PY{n}{offspring}\PY{p}{)}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} perform crossover for all combinations of offspring (mating)}
+    \PY{k}{for} \PY{n}{child1}\PY{p}{,} \PY{n}{child2} \PY{o+ow}{in} \PY{n+nb}{zip}\PY{p}{(}\PY{n}{offspring}\PY{p}{[}\PY{p}{:}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{,} \PY{n}{offspring}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{:}\PY{p}{:}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+      \PY{c+c1}{\PYZsh{} only mate if under crossover probability threshold}
+      \PY{k}{if} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{CXPB}\PY{p}{:}
+        \PY{n}{toolbox}\PY{o}{.}\PY{n}{mate}\PY{p}{(}\PY{n}{child1}\PY{o}{.}\PY{n}{weights}\PY{p}{,} \PY{n}{child2}\PY{o}{.}\PY{n}{weights}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} mutate an agent}
+    \PY{k}{for} \PY{n}{mutant} \PY{o+ow}{in} \PY{n}{offspring}\PY{p}{:}
+      \PY{c+c1}{\PYZsh{} only mutate if under mutation probability threshold}
+      \PY{k}{if} \PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{MUTPB}\PY{p}{:}
+        \PY{n}{toolbox}\PY{o}{.}\PY{n}{mutate}\PY{p}{(}\PY{n}{mutant}\PY{o}{.}\PY{n}{weights}\PY{p}{)}
+        \PY{c+c1}{\PYZsh{} only change group if under independent probability threshold }
+        \PY{k}{if} \PY{p}{(}\PY{n}{random}\PY{o}{.}\PY{n}{random}\PY{p}{(}\PY{p}{)} \PY{o}{\PYZlt{}} \PY{n}{INDPB}\PY{p}{)}\PY{p}{:}
+          \PY{n}{mutant}\PY{o}{.}\PY{n}{startingGroup} \PY{o}{=} \PY{n}{random}\PY{o}{.}\PY{n}{randint}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{)}
+
+    \PY{c+c1}{\PYZsh{} reset all agents in the population}
+    \PY{k}{for} \PY{n}{person} \PY{o+ow}{in} \PY{n}{offspring}\PY{p}{:}
+      \PY{n}{person}\PY{o}{.}\PY{n}{reset}\PY{p}{(}\PY{p}{)}
+    
+    \PY{c+c1}{\PYZsh{} play game, allowing agents to swap groups using neural network}
+    \PY{n}{pop}\PY{p}{[}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{playGameAndEvolve}\PY{p}{(}\PY{n}{offspring}\PY{p}{,} \PY{n}{network}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} get results of game}
+    \PY{n}{popFitness} \PY{o}{=} \PY{n}{fitnessStats}\PY{p}{(}\PY{n}{pop}\PY{p}{)}
+    \PY{n}{generationFitness}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{popFitness}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+    \PY{n}{currentGroups} \PY{o}{=} \PY{n}{countGroups}\PY{p}{(}\PY{n}{pop}\PY{p}{)}
+    \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{len}\PY{p}{(}\PY{n}{currentGroups}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+      \PY{n}{groupMembership}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{currentGroups}\PY{p}{[}\PY{n}{i}\PY{p}{]}\PY{p}{)}
+    \PY{c+c1}{\PYZsh{} output generation data}
+    \PY{k}{if} \PY{p}{(}\PY{n}{verbose}\PY{p}{)}\PY{p}{:} 
+      \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fitness avg: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{popFitness}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+      \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fitness max: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{popFitness}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{max}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+      \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Group count: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{currentGroups}\PY{p}{)}\PY{p}{)}
+  \PY{k}{return} \PY{n}{pop}\PY{p}{,} \PY{n}{groupMembership}\PY{p}{,} \PY{n}{generationFitness}
+
+\PY{n}{pop}\PY{p}{,} \PY{n}{groupsByGeneration}\PY{p}{,} \PY{n}{fitnessByGeneration} \PY{o}{=} \PY{n}{evolvePopulation}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+-- Generation 1 --
+Fitness avg: 2.7052530566250863
+Fitness max: 5.304347826086956
+Group count: [130, 120, 128, 122]
+-- Generation 2 --
+Fitness avg: 2.348364780171771
+Fitness max: 5.166666666666667
+Group count: [76, 207, 51, 166]
+-- Generation 3 --
+Fitness avg: 2.8205196778481905
+Fitness max: 4.538461538461538
+Group count: [44, 348, 19, 89]
+-- Generation 4 --
+Fitness avg: 3.438327174199863
+Fitness max: 4.5
+Group count: [31, 431, 12, 26]
+-- Generation 5 --
+Fitness avg: 3.6220237323556312
+Fitness max: 4.555555555555555
+Group count: [16, 457, 15, 12]
+-- Generation 6 --
+Fitness avg: 3.6389396225072512
+Fitness max: 4.631578947368421
+Group count: [15, 458, 13, 14]
+-- Generation 7 --
+Fitness avg: 3.7603808207043943
+Fitness max: 4.444444444444445
+Group count: [8, 476, 8, 8]
+-- Generation 8 --
+Fitness avg: 3.7170115820060308
+Fitness max: 4.428571428571429
+Group count: [13, 462, 12, 13]
+-- Generation 9 --
+Fitness avg: 3.7286439010332613
+Fitness max: 4.545454545454546
+Group count: [9, 463, 12, 16]
+-- Generation 10 --
+Fitness avg: 3.757679745972386
+Fitness max: 4.666666666666667
+Group count: [8, 468, 9, 15]
+-- Generation 11 --
+Fitness avg: 3.802736677628224
+Fitness max: 4.5
+Group count: [16, 466, 14, 4]
+-- Generation 12 --
+Fitness avg: 3.765879908676785
+Fitness max: 4.434782608695652
+Group count: [12, 464, 12, 12]
+-- Generation 13 --
+Fitness avg: 3.8320509950215476
+Fitness max: 4.444444444444445
+Group count: [6, 479, 6, 9]
+-- Generation 14 --
+Fitness avg: 3.807902673588621
+Fitness max: 4.5
+Group count: [8, 473, 9, 10]
+-- Generation 15 --
+Fitness avg: 3.8355002146507826
+Fitness max: 4.352941176470588
+Group count: [7, 477, 8, 8]
+-- Generation 16 --
+Fitness avg: 3.81452005636948
+Fitness max: 4.4
+Group count: [9, 474, 9, 8]
+-- Generation 17 --
+Fitness avg: 3.846840508974262
+Fitness max: 4.363636363636363
+Group count: [12, 474, 7, 7]
+-- Generation 18 --
+Fitness avg: 3.828662284774195
+Fitness max: 4.4
+Group count: [8, 475, 6, 11]
+-- Generation 19 --
+Fitness avg: 3.8585190226141663
+Fitness max: 4.5
+Group count: [11, 477, 8, 4]
+-- Generation 20 --
+Fitness avg: 3.886712936343885
+Fitness max: 4.285714285714286
+Group count: [7, 485, 0, 8]
+-- Generation 21 --
+Fitness avg: 3.811140323256763
+Fitness max: 4.4
+Group count: [6, 475, 5, 14]
+-- Generation 22 --
+Fitness avg: 3.8382808187736916
+Fitness max: 4.5
+Group count: [9, 476, 7, 8]
+-- Generation 23 --
+Fitness avg: 3.894799513883249
+Fitness max: 4.421052631578948
+Group count: [3, 486, 4, 7]
+-- Generation 24 --
+Fitness avg: 3.8218551883654737
+Fitness max: 4.32
+Group count: [9, 473, 6, 12]
+-- Generation 25 --
+Fitness avg: 3.8018987456795355
+Fitness max: 4.333333333333333
+Group count: [7, 478, 3, 12]
+-- Generation 26 --
+Fitness avg: 3.9151852419496946
+Fitness max: 4.4
+Group count: [3, 490, 4, 3]
+-- Generation 27 --
+Fitness avg: 3.8323264010435256
+Fitness max: 4.4
+Group count: [9, 473, 5, 13]
+-- Generation 28 --
+Fitness avg: 3.859043080706753
+Fitness max: 4.375
+Group count: [9, 481, 3, 7]
+-- Generation 29 --
+Fitness avg: 3.7281926010814557
+Fitness max: 4.545454545454546
+Group count: [16, 461, 5, 18]
+-- Generation 30 --
+Fitness avg: 3.880431807921793
+Fitness max: 4.428571428571429
+Group count: [5, 483, 6, 6]
+-- Generation 31 --
+Fitness avg: 3.8929915701764606
+Fitness max: 4.8
+Group count: [8, 480, 8, 4]
+-- Generation 32 --
+Fitness avg: 3.8446978123862747
+Fitness max: 4.666666666666667
+Group count: [11, 471, 9, 9]
+-- Generation 33 --
+Fitness avg: 3.8192469893807734
+Fitness max: 4.4
+Group count: [4, 478, 7, 11]
+-- Generation 34 --
+Fitness avg: 3.900282213991678
+Fitness max: 4.4
+Group count: [7, 486, 4, 3]
+-- Generation 35 --
+Fitness avg: 3.916779880888779
+Fitness max: 4.428571428571429
+Group count: [5, 487, 5, 3]
+-- Generation 36 --
+Fitness avg: 3.8920581797134624
+Fitness max: 4.315789473684211
+Group count: [6, 480, 11, 3]
+-- Generation 37 --
+Fitness avg: 3.872124453073901
+Fitness max: 4.352941176470588
+Group count: [5, 483, 4, 8]
+-- Generation 38 --
+Fitness avg: 3.8880702383417236
+Fitness max: 4.363636363636363
+Group count: [5, 485, 2, 8]
+-- Generation 39 --
+Fitness avg: 3.873862293925941
+Fitness max: 4.4
+Group count: [8, 479, 4, 9]
+-- Generation 40 --
+Fitness avg: 3.9081393679787118
+Fitness max: 4.428571428571429
+Group count: [3, 489, 5, 3]
+-- Generation 41 --
+Fitness avg: 3.893856155827585
+Fitness max: 4.363636363636363
+Group count: [5, 488, 3, 4]
+-- Generation 42 --
+Fitness avg: 3.868581978562295
+Fitness max: 4.3076923076923075
+Group count: [5, 484, 4, 7]
+-- Generation 43 --
+Fitness avg: 3.912139085207245
+Fitness max: 4.285714285714286
+Group count: [9, 487, 1, 3]
+-- Generation 44 --
+Fitness avg: 3.909089034904237
+Fitness max: 4.444444444444445
+Group count: [7, 486, 3, 4]
+-- Generation 45 --
+Fitness avg: 3.8511722986772012
+Fitness max: 4.545454545454546
+Group count: [7, 478, 6, 9]
+-- Generation 46 --
+Fitness avg: 3.8879268959764413
+Fitness max: 4.444444444444445
+Group count: [10, 483, 2, 5]
+-- Generation 47 --
+Fitness avg: 3.9040550519282538
+Fitness max: 4.444444444444445
+Group count: [13, 481, 3, 3]
+-- Generation 48 --
+Fitness avg: 3.878849880763209
+Fitness max: 4.56
+Group count: [11, 479, 6, 4]
+-- Generation 49 --
+Fitness avg: 3.858157573797815
+Fitness max: 4.666666666666667
+Group count: [12, 479, 3, 6]
+-- Generation 50 --
+Fitness avg: 3.8272179261044124
+Fitness max: 4.6
+Group count: [10, 474, 7, 9]
+    \end{Verbatim}
+
+    The below cell output is two graphs, the first graph is of of the group
+counts at the end of each generation, which clearly shows a trend of all
+agents quickly learning an optimal behaviour of joining the buddies
+society. The second graph is of the average fitness of all agents in the
+population at the end of each generation. This graph shows a trend of
+the average fitness converging towards 4.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{8}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} setup labels}
+\PY{n}{labels} \PY{o}{=} \PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Saints}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Buddies}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Fight Club}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Vandals}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}
+\PY{c+c1}{\PYZsh{} setup subplots to display two graphs}
+\PY{n}{figure}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{n}{figsize}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{5}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} plot all groups }
+\PY{k}{for} \PY{n}{group} \PY{o+ow}{in} \PY{n}{groupsByGeneration}\PY{p}{:}
+  \PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{group}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} label groups}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{legend}\PY{p}{(}\PY{n}{labels}\PY{p}{,} \PY{n}{loc}\PY{o}{=}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{best}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{fancybox}\PY{o}{=}\PY{k+kc}{True}\PY{p}{,} \PY{n}{framealpha}\PY{o}{=}\PY{l+m+mf}{0.5}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} label axes}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Generations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Agents in Group}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Generations}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fitness}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} plot average fitness}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{fitnessByGeneration}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assessment_files/assessment_15_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \hypertarget{evaluation}{%
+\subsection{Evaluation}\label{evaluation}}
+
+The evolved population needs to be statistically compared to a
+population of agents that have not been evolved or allowed to change
+groups. As evolution has an element of randomness to it (along with the
+game itself being inherently random), both populations will be ran 30
+times, with the average fitness of the population recorded. These 30
+average fitness values for the evolved population will be compared as a
+group to 30 average fitness values obtained by the 30 runs of
+non-evolved population that is not allowed to change groups.
+
+First, these runs are performed by the below cell:
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{9}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{n}{avgBaseFitnesses}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Begin basic run : }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{31}\PY{p}{)}\PY{p}{:}
+  \PY{c+c1}{\PYZsh{} setup population}
+  \PY{n}{pop} \PY{o}{=} \PY{n}{toolbox}\PY{o}{.}\PY{n}{pop}\PY{p}{(}\PY{n}{n}\PY{o}{=}\PY{n}{POP}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} play game}
+  \PY{n}{pop} \PY{o}{=} \PY{n}{playBasicGame}\PY{p}{(}\PY{n}{pop}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} save average fitness}
+  \PY{n}{avgBaseFitnesses}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{fitnessStats}\PY{p}{(}\PY{n}{pop}\PY{p}{)}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{mean}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} add dot to loading bar}
+  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ Basic run complete}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{n}{avgEvolvedFitnesses}\PY{o}{=}\PY{p}{[}\PY{p}{]}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Begin evolve run: }\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{31}\PY{p}{)}\PY{p}{:}
+  \PY{c+c1}{\PYZsh{} evolve population}
+  \PY{n}{pop}\PY{p}{,} \PY{n}{groupsByGeneration}\PY{p}{,} \PY{n}{fitnessByGeneration} \PY{o}{=} \PY{n}{evolvePopulation}\PY{p}{(}\PY{n}{verbose}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} save average fitness of last generation}
+  \PY{n}{avgEvolvedFitnesses}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{fitnessByGeneration}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+  \PY{c+c1}{\PYZsh{} add dot to loading bar}
+  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{.}\PY{l+s+s2}{\PYZdq{}}\PY{p}{,} \PY{n}{end}\PY{o}{=}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ Evolve run complete}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} output both average lists to visually check}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Basic fitness averages:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{avgBaseFitnesses}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Evolved fitness averages:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{n}{avgEvolvedFitnesses}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Begin basic run : {\ldots} Basic run complete
+Begin evolve run: {\ldots} Evolve run complete
+Basic fitness averages:
+[2.797915667803283, 2.6426266546061714, 2.750092595339091, 2.6470030186296163,
+2.661634289638753, 2.6594813544230163, 2.858940523381521, 2.559263864699405,
+2.6612539276859692, 2.6478183317875126, 2.663880893609176, 2.60724530251553,
+2.6826649967285476, 2.7505463968978225, 2.8088278692361626, 2.6707851963746645,
+2.8000166757525453, 2.5718791409305166, 2.7810540152385377, 2.610800870503941,
+2.74881038092658, 2.6859870145723246, 2.6474846992199885, 2.5942603315076145,
+2.580090895580863, 2.655857384328612, 2.7628075302213793, 2.6787671471210666,
+2.6851683516925977, 2.6953975005667776]
+Evolved fitness averages:
+[3.843483392006978, 3.931488963852618, 3.8649967135033467, 3.95490252152545,
+3.891345072467807, 3.9168712299854533, 3.92621889164957, 3.9419959309926287,
+3.87520759812952, 3.9393814664343267, 3.9529434689781713, 3.9492672513732083,
+3.9531230938086814, 3.948427747224891, 3.9446260950604715, 3.9361881584720426,
+3.933774215744916, 3.912616878905042, 3.935646029372885, 3.872589737071656,
+3.910562616047471, 3.89708392247059, 3.9429037234799083, 3.9084139533217708,
+3.919521389508701, 3.8804748227536665, 3.8932483896235697, 3.92582368854182,
+3.8690734549180887, 3.9527852511854147]
+    \end{Verbatim}
+
+    To know which statistical test should be used to compare the two average
+populations, we first need to find out if the above collected data is
+normally distributed. This can be checked by simply creating a boxplot
+for each population of average fitness values and examining the output.
+These boxplots are generated by the below cell, and from the output we
+can clearly deduce that both populations are normally distributed.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{10}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} setup subplots to display two graphs}
+\PY{n}{figure}\PY{p}{,} \PY{n}{axis} \PY{o}{=} \PY{n}{plt}\PY{o}{.}\PY{n}{subplots}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} appropriately space graphs}
+\PY{n}{figure}\PY{o}{.}\PY{n}{subplots\PYZus{}adjust}\PY{p}{(}\PY{n}{wspace}\PY{o}{=}\PY{l+m+mf}{0.35}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} plot base fitness box}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{p}{[}\PY{n}{avgBaseFitnesses}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} appropriate space box in graph}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{l+m+mf}{0.8}\PY{p}{,} \PY{l+m+mf}{1.2}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} set labels}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xticklabels}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Base}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fitness}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} plot evolved fitness box}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{boxplot}\PY{p}{(}\PY{p}{[}\PY{n}{avgEvolvedFitnesses}\PY{p}{]}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} appropriate space box in graph}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xlim}\PY{p}{(}\PY{l+m+mf}{0.8}\PY{p}{,} \PY{l+m+mf}{1.2}\PY{p}{)}
+\PY{c+c1}{\PYZsh{} set labels}
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}xticklabels}\PY{p}{(}\PY{p}{[}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Evolved}\PY{l+s+s2}{\PYZdq{}}\PY{p}{]}\PY{p}{)} 
+\PY{n}{axis}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{set\PYZus{}ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Fitness}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{assessment_files/assessment_19_0.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    As the data has been found to be normally distributed, an unpaired
+t-test is the appropriate statistical method to follow. We now need to
+check if the data is of equal variance, which cannot be can be visually
+approximated using the above generated boxplots as they are not on the
+same axis. We will instead check variance using the numpy library on
+each population of average fitnesses. The ratio between these two
+variances can be used to determine if the populations are of equal
+variance.
+
+As shown by the output of the below cell, the ratio of variances between
+these two populations is \texttt{5.9}. As
+\texttt{5.9\ \textgreater{}\ 4}, we can safely assume that these
+populations of average fitness are not of equal variance and therefore a
+Welch t-test should be performed to statistically compare the two.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{11}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} calculate variances}
+\PY{n}{baseVariance} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{avgBaseFitnesses}\PY{p}{)}
+\PY{n}{evolvedVariance} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{var}\PY{p}{(}\PY{n}{avgEvolvedFitnesses}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} output variances}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Base variance   :   }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{baseVariance}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Evolve variance :   }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{evolvedVariance}\PY{p}{)}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Ratio           :   }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{baseVariance}\PY{o}{/}\PY{n}{evolvedVariance}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Base variance   :   0.005609316421658773
+Evolve variance :   0.0009494663995414356
+Ratio           :   5.907861957377226
+    \end{Verbatim}
+
+    Running a Welch t-test is easy to do using the python module
+\texttt{scipy}. The below cell computes the \texttt{p} value for the
+statistical significance of the two populations. This p value is
+calculated as \texttt{7.5x10e-45}, therefore as
+\texttt{p\ \textless{}\ 0.05} we can safely say that the evolutionary
+algorithm used to evolve the population of agents is statistically
+significant.
+
+The effect size of this statistical significance was computed using
+Cohen's D and is output in the below cell as well. Cohen's D states that
+any value greater than \texttt{0.8} is a large effect size. The two
+populations of average fitnesses tested have no overlap of distribution
+so the output of Cohen's D is \texttt{21.5}, allowing the evolutionary
+algorithm to be classified as having a very large effect size.
+
+    \begin{tcolorbox}[breakable, size=fbox, boxrule=1pt, pad at break*=1mm,colback=cellbackground, colframe=cellborder]
+\prompt{In}{incolor}{12}{\boxspacing}
+\begin{Verbatim}[commandchars=\\\{\}]
+\PY{c+c1}{\PYZsh{} calculate Welch t\PYZhy{}test and output}
+\PY{n}{stat}\PY{p}{,} \PY{n}{p} \PY{o}{=} \PY{n}{stats}\PY{o}{.}\PY{n}{ttest\PYZus{}ind}\PY{p}{(}\PY{n}{avgBaseFitnesses}\PY{p}{,} \PY{n}{avgEvolvedFitnesses}\PY{p}{,} \PY{n}{equal\PYZus{}var}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{p value    : }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{p}\PY{p}{)}\PY{p}{)}
+
+\PY{c+c1}{\PYZsh{} calculate cohen\PYZsq{}s D and output}
+\PY{k}{def} \PY{n+nf}{cohensD}\PY{p}{(}\PY{n}{pop1}\PY{p}{,}\PY{n}{pop2}\PY{p}{)}\PY{p}{:}
+  \PY{n}{meanDiff} \PY{o}{=} \PY{n+nb}{abs}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{pop1}\PY{p}{)}\PY{o}{\PYZhy{}}\PY{n}{np}\PY{o}{.}\PY{n}{mean}\PY{p}{(}\PY{n}{pop2}\PY{p}{)}\PY{p}{)}
+  \PY{n}{avgStd} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{n}{baseVariance}\PY{o}{+}\PY{n}{evolvedVariance}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}
+  \PY{k}{return} \PY{n}{meanDiff} \PY{o}{/} \PY{n}{avgStd}
+
+\PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Effect size: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{cohensD}\PY{p}{(}\PY{n}{avgBaseFitnesses}\PY{p}{,} \PY{n}{avgEvolvedFitnesses}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+\end{Verbatim}
+\end{tcolorbox}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+p value    : 7.50716303607856e-45
+Effect size: 21.5116833124566
+    \end{Verbatim}
+
+    \hypertarget{conclusions}{%
+\subsection{Conclusions}\label{conclusions}}
+
+Through the statistical comparisions carried out in this notebook, the
+multi-agent evolutionary adaptation method created for this problem
+produces a population that is statistically significant from the
+original population. The population consistently trends to all agents in
+the population joining the \texttt{Buddies} society which makes logical
+sense as the strategy of \texttt{Buddies} allows for maximum wealth gain
+when playing within the group, while also being defensive of any outside
+groups that may decide to be selfish.
+
+The fitness trend of average agent fitness converging to 4 is the best
+possible performance, as in a multi-agent evolutionary system, all
+agents should strive to the highest score possible. The best choice to
+benefit all agents is the choice with the highest total payoff, and the
+\texttt{4,4} both opponents cooperate strategy is the best total payoff
+for the population, so an average fitness converging to 4 shows that the
+ideal strategy is consistently found by the evolutionary algorithm.
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+\end{document}
